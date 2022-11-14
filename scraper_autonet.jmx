@@ -15,7 +15,7 @@
           </elementProp>
           <elementProp name="country" elementType="Argument">
             <stringProp name="Argument.name">country</stringProp>
-            <stringProp name="Argument.value">România</stringProp>
+            <stringProp name="Argument.value">Romania</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
@@ -128,8 +128,8 @@ vars.putObject(&quot;k&quot;,1);</stringProp>
             <stringProp name="HTTPSampler.domain">www.autonet-group.ro</stringProp>
             <stringProp name="HTTPSampler.port"></stringProp>
             <stringProp name="HTTPSampler.protocol">https</stringProp>
-            <stringProp name="HTTPSampler.contentEncoding"></stringProp>
-            <stringProp name="HTTPSampler.path">posturi-disponibile-autonet</stringProp>
+            <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
+            <stringProp name="HTTPSampler.path">cariere</stringProp>
             <stringProp name="HTTPSampler.method">GET</stringProp>
             <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
             <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
@@ -145,26 +145,32 @@ vars.putObject(&quot;k&quot;,1);</stringProp>
               <collectionProp name="HeaderManager.headers"/>
             </HeaderManager>
             <hashTree/>
-            <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="details" enabled="true">
-              <stringProp name="XPathExtractor.default"></stringProp>
-              <stringProp name="XPathExtractor.refname">details</stringProp>
-              <stringProp name="XPathExtractor.matchNumber">-1</stringProp>
-              <stringProp name="XPathExtractor.xpathQuery">//table[@id=&quot;myTable&quot;]/tbody/tr//p</stringProp>
-              <boolProp name="XPathExtractor.fragment">true</boolProp>
-              <boolProp name="XPathExtractor.validate">false</boolProp>
-              <boolProp name="XPathExtractor.tolerant">true</boolProp>
-              <boolProp name="XPathExtractor.namespace">false</boolProp>
-            </XPathExtractor>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="titles" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">titles</stringProp>
+              <stringProp name="RegexExtractor.regex">&lt;div class=&quot;fw-bolder fs-5 mb-3 text-center text-sm-start&quot;&gt;([^&lt;]*)</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
+            </RegexExtractor>
             <hashTree/>
-            <XPathExtractor guiclass="XPathExtractorGui" testclass="XPathExtractor" testname="links" enabled="true">
-              <stringProp name="XPathExtractor.default"></stringProp>
-              <stringProp name="XPathExtractor.refname">links</stringProp>
-              <stringProp name="XPathExtractor.matchNumber">-1</stringProp>
-              <stringProp name="XPathExtractor.xpathQuery">//table[@id=&quot;myTable&quot;]/tbody/tr/td//a/@href</stringProp>
-              <boolProp name="XPathExtractor.validate">false</boolProp>
-              <boolProp name="XPathExtractor.tolerant">true</boolProp>
-              <boolProp name="XPathExtractor.namespace">false</boolProp>
-            </XPathExtractor>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="city" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">city</stringProp>
+              <stringProp name="RegexExtractor.regex">&lt;div class=&quot;fs-8 mb-2 text-center text-sm-start&quot;&gt;(.*)&lt;</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
+            </RegexExtractor>
+            <hashTree/>
+            <RegexExtractor guiclass="RegexExtractorGui" testclass="RegexExtractor" testname="link" enabled="true">
+              <stringProp name="RegexExtractor.useHeaders">false</stringProp>
+              <stringProp name="RegexExtractor.refname">link</stringProp>
+              <stringProp name="RegexExtractor.regex">&lt;a class=&quot;orange fw-bolder&quot; href=&quot;([^&quot;]*)&quot;</stringProp>
+              <stringProp name="RegexExtractor.template">$1$</stringProp>
+              <stringProp name="RegexExtractor.default"></stringProp>
+              <stringProp name="RegexExtractor.match_number">-1</stringProp>
+            </RegexExtractor>
             <hashTree/>
           </hashTree>
           <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
@@ -210,32 +216,48 @@ vars.putObject(&quot;k&quot;,1);</stringProp>
         </GenericController>
         <hashTree>
           <ForeachController guiclass="ForeachControlPanel" testclass="ForeachController" testname="ForEach Controller" enabled="true">
-            <stringProp name="ForeachController.inputVal">links</stringProp>
-            <stringProp name="ForeachController.returnVal">link</stringProp>
+            <stringProp name="ForeachController.inputVal">titles</stringProp>
+            <stringProp name="ForeachController.returnVal">title</stringProp>
             <boolProp name="ForeachController.useSeparator">true</boolProp>
             <stringProp name="ForeachController.startIndex">0</stringProp>
           </ForeachController>
           <hashTree>
-            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="${link}" enabled="true">
+            <CounterConfig guiclass="CounterConfigGui" testclass="CounterConfig" testname="Counter" enabled="true">
+              <stringProp name="CounterConfig.start">1</stringProp>
+              <stringProp name="CounterConfig.end"></stringProp>
+              <stringProp name="CounterConfig.incr">1</stringProp>
+              <stringProp name="CounterConfig.name">k</stringProp>
+              <stringProp name="CounterConfig.format"></stringProp>
+              <boolProp name="CounterConfig.per_user">false</boolProp>
+            </CounterConfig>
+            <hashTree/>
+            <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="${title}" enabled="true">
               <stringProp name="cacheKey">true</stringProp>
               <stringProp name="filename"></stringProp>
               <stringProp name="parameters"></stringProp>
               <stringProp name="script">var id = UUID.randomUUID().toString();
 var k = vars.getObject(&quot;k&quot;);
-var link  = &quot;https://www.autonet-group.ro/&quot; + vars.get(&quot;link&quot;);
+var title = vars.get(&quot;title&quot;);
+var link  = &quot;https://www.autonet-group.ro/&quot; + vars.get(&quot;link_&quot;+k);
 var country = vars.get(&quot;country&quot;);
-var detail1 = vars.get(&quot;details_&quot;+k);
-if(detail1.equals(&quot;&lt;p&gt; &lt;/p&gt;&quot;)){
-	k = k + 1;
+var detail1 = vars.get(&quot;city_&quot;+k);
+var city = &quot;&quot;;
+if(detail1.contains(&quot;&lt;b&gt;&quot;)){
+	city = (detail1 =~ /&lt;b&gt;([^&lt;]*)&lt;\/b&gt;/)[0][1];
 }
-detail1 = vars.get(&quot;details_&quot;+k); // reload detail1 in case it&apos;s the empty &lt;p&gt;
-var detail2 = vars.get(&quot;details_&quot;+(k+1));
-var title = detail1.replaceAll(&quot;&lt;[^&gt;]*&gt;&quot;, &quot;&quot;).replace(&quot;\u00a0&quot;,&quot;&quot;);//strip html tags and  &amp;nbsp
-var city = detail2.replaceAll(&quot;&lt;[^&gt;]*&gt;&quot;, &quot;&quot;).replace(&quot;Posturi disponibile -&quot;,&quot;&quot;).replace(&quot;\u00a0&quot;,&quot;&quot;).replace(&quot;Bucuresti&quot;,&quot;București&quot;).replace(&quot;Ploiesti&quot;,&quot;Ploiești&quot;).replace(&quot;Popesti&quot;,&quot;Popești&quot;).replace(&quot;Buzau&quot;,&quot;Buzău&quot;).replace(&quot;Ramnicu Valcea&quot;,&quot;Râmnicu Vâlcea&quot;).replace(&quot;Bacau&quot;,&quot;Bacău&quot;).replace(&quot;Constanta&quot;,&quot;Constanța&quot;).replace(&quot;Targoviste&quot;,&quot;Târgoviște&quot;).replace(&quot;Galati&quot;,&quot;Galați&quot;);
+else if (detail1.contains(&quot;&lt;strong&gt;&quot;)){
+	city = (detail1 =~ /&lt;strong&gt;([^&lt;]*)&lt;\/strong&gt;/)[0][1];
+}
+else{
+	if(detail1.equals(&quot;Posturi disponibile&quot;))
+	{
+		city = &quot;Remote&quot;;
+	}
+	else{
+		log.error(&quot;Unkown details &quot;+detail1);
+	}
+}
 
-//let&apos;s use a manual counter here since we need to skip an empty space autonet left
-k = k + 3;
-vars.putObject(&quot;k&quot;,k);
 
 String this_job = &apos;{&quot;id&quot;:&quot;&apos;+id+&apos;&quot;,&quot;job_title&quot;:&quot;&apos;+title+&apos;&quot;, &quot;job_link&quot;:&quot;&apos;+link+&apos;&quot;,&quot;company&quot;:&quot;${company}&quot;,&quot;country&quot;:&quot;&apos;+country+&apos;&quot;,&quot;city&quot;:&quot;&apos;+city+&apos;&quot;}&apos;;
 var jobList = vars.getObject(&quot;jobList&quot;);
